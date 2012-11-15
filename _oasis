@@ -1,0 +1,14 @@
+OASISFormat: 0.3
+Name:        signpost-measurement
+Version:     0.1
+Synopsis:    a measurement tool to evaluate the ability to use dnssec
+  functionality across the internet 
+Authors:     Charalampos Rotsos
+License:     GPL-2
+Plugins:     META (0.3)
+
+Executable signpost_test
+  Path:         src/
+  BuildTools:   ocamlbuild
+  MainIs:       test.ml
+  BuildDepends: lwt, dns, dns.lwt  
