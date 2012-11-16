@@ -8,7 +8,9 @@ License:     GPL-2
 Plugins:     META (0.3)
 
 Executable signpost_test
-  Path:         src/
-  BuildTools:   ocamlbuild
-  MainIs:       test.ml
-  BuildDepends: lwt, dns, dns.lwt  
+  Path:           src/
+  BuildTools:     ocamlbuild
+  MainIs:         test.ml
+  Custom:         true
+  CompiledObject: best
+  BuildDepends:   lwt, dns, dns.lwt
