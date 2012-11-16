@@ -61,5 +61,14 @@ lwt _ =
   let _ = printf "Starting test...\n%!" in
   lwt (nameservers, domain) = 
     load_resolv_file resolver_file 
-  in 
+  in
+  lwt _ = 
+    Lwt_list.iter_s (
+      fun ns -> 
+        lwt _ = Direct.test ns in 
+          return () 
+    ) nameservers
+  in
+  lwt _ = Lwt_log.close file_log in 
     return ()
+
