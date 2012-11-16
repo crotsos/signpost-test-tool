@@ -14,6 +14,52 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *)
 
-lwt _ = 
-  let _ printf "Starting test...\n%!" in
+open Printf
+open Lwt
+
+open Lwt_log 
+open Lwt_unix 
+open Lwt_io 
+
+let resolver_file = "/etc/resolv.conf" 
+
+  let load_resolv_file file =
+  try 
+    lwt fd = openfile file [O_RDONLY] 0o640 in
+    let fd = of_fd ~mode:(input) fd in 
+    let rec read_file fd = 
+      match_lwt (read_line_opt fd) with 
+      | None -> return ([], "")
+      | Some line when (Re_str.string_match (Re_str.regexp "^[\t\ ]*#") line 0) ->
+            read_file fd
+      | Some line  ->
+          match Re_str.split (Re_str.regexp "[\ \t]+") line with 
+            | "nameserver"::value::_ ->
+                lwt (ns, domain) = read_file fd in 
+                lwt _ = log ~level:Error (sprintf "domain:%s" value) in
+                  return (ns@[value], domain)
+
+            | "domain"::value::_ ->
+                lwt (ns, domain) = read_file fd in
+                lwt _ = log ~level:Error (sprintf "nameserver:%s" value) in
+                  return (ns, value)
+            | _ -> read_file fd
+    in
+    lwt (ns, domain) = read_file fd in 
+      return (ns, domain)
+  with exn -> 
+    lwt _ = log ~exn ~level:Error "failed to load resolv.conf" in 
+      return ([], "") 
+
+lwt _ =
+  (* setup loggers *)
+  let std_log = !default in 
+  let template = "$(date).$(milliseconds) $(loc-file):$(loc-line)[$(pid)]: $(message)" in 
+  lwt file_log = file ~template ~mode:`Truncate ~file_name:"signpost-test-result.log"
+                   () in 
+  let _ = default := broadcast [file_log; std_log; ] in 
+  let _ = printf "Starting test...\n%!" in
+  lwt (nameservers, domain) = 
+    load_resolv_file resolver_file 
+  in 
     return ()
