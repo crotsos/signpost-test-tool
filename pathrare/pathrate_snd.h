@@ -12,7 +12,7 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with pathrate; if not, write to the Free Software
+ aint32_t with pathrate; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
@@ -34,7 +34,7 @@
 #endif
 
 EXTERN int iterative;
-EXTERN long recv_ctr_msg(int ctr_strm, char *ctr_buff) ;
-EXTERN void send_ctr_msg(int ctr_strm, long ctr_code) ;
+EXTERN int32_t recv_ctr_msg(int ctr_strm, char *ctr_buff) ;
+EXTERN void send_ctr_msg(int ctr_strm, int32_t ctr_code) ;
 EXTERN double time_to_us_delta(struct timeval tv1, struct timeval tv2);
 EXTERN void help(void);

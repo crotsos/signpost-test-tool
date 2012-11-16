@@ -12,7 +12,7 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with pathrate; if not, write to the Free Software
+ aint32_t with pathrate; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
@@ -332,7 +332,7 @@ int main(int argc, char* argv[])
   srandom(getpid()); /* Create random payload; does it matter? */
   for (i=0; i<MAX_PACK_SZ-1; i++) random_data[i]=(char)(random()&0x000000ff);
   bzero((char*)&pack_buf, MAX_PACK_SZ);
-  memcpy(pack_buf+2*sizeof(long), random_data, (MAX_PACK_SZ-1)-2*sizeof(sizeof(long)));
+  memcpy(pack_buf+2*sizeof(int32_t), random_data, (MAX_PACK_SZ-1)-2*sizeof(sizeof(int32_t)));
   
   for (j=0; j<no_pack_sizes; j++) {
     pack_sz = max_pack_sz;
@@ -788,7 +788,7 @@ int main(int argc, char* argv[])
      The following constraint is only used in very low capacity paths. 
    */
   train_len = max_train_len;
-  //train_len = (long) (((avg_bw*0.5) * (max_train_spacing*1000)) / (max_pack_sz*8)); 
+  //train_len = (int32_t) (((avg_bw*0.5) * (max_train_spacing*1000)) / (max_pack_sz*8)); 
   //if (train_len > max_train_len) train_len = max_train_len;
   //if (train_len < train_len_P1)  train_len = train_len_P1;
   ctr_code = TRAIN_LEN | (train_len<<8);

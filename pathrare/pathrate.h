@@ -12,7 +12,7 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with pathrate; if not, write to the Free Software
+ aint32_t with pathrate; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
@@ -60,8 +60,8 @@
 typedef struct {
   double mode_value_lo;	/* Lower bandwidth value (Mbps) of local mode */
   double mode_value_hi;	/* Upper bandwidth value (Mbps) of local mode */
-	long   mode_cnt;	/* number of measurements in local mode */ 
-	long   bell_cnt;	/* number of measurements in "bell" of local mode */ 
+	int32_t   mode_cnt;	/* number of measurements in local mode */ 
+	int32_t   bell_cnt;	/* number of measurements in "bell" of local mode */ 
   double bell_lo;		/* low threshold (Mbps) of bell */
 	double bell_hi;		/* high threshold (Mbps) of bell */  
 	double bell_kurtosis;		  
@@ -96,8 +96,8 @@ typedef struct {
 #define  MIN_TRAIN_SPACING	500000 	/* microseconds */	
 #define  TRAIN_SPACING_SEC	1	/* seconds */
 
-EXTERN long verbose ;
-EXTERN long Verbose ;
+EXTERN int32_t verbose ;
+EXTERN int32_t Verbose ;
 EXTERN int sock_tcp, sock_udp;
 
 

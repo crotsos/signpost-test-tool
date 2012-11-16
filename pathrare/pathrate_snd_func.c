@@ -12,7 +12,7 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with pathrate; if not, write to the Free Software
+ aint32_t with pathrate; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
@@ -33,24 +33,24 @@
 /* 
 	Receive a message from the control stream 
 */
-long recv_ctr_msg(int ctr_strm, char *ctr_buff) 
+int32_t recv_ctr_msg(int ctr_strm, char *ctr_buff) 
 { 
-	long ctr_code;
-  if (read(ctr_strm, ctr_buff, sizeof(long)) != sizeof(long)) 
+	int32_t ctr_code;
+  if (read(ctr_strm, ctr_buff, sizeof(int32_t)) != sizeof(int32_t)) 
 	  return(-1);
-	memcpy(&ctr_code, ctr_buff, sizeof(long)); 
+	memcpy(&ctr_code, ctr_buff, sizeof(int32_t)); 
 	return(ntohl(ctr_code));
 }
 
 /*
     Send an empty message to the control stream
 */
-void send_ctr_msg(int ctr_strm, long ctr_code) 
+void send_ctr_msg(int ctr_strm, int32_t ctr_code) 
 {
   char ctr_buff[8];
-  long ctr_code_n = htonl(ctr_code);
-  memcpy(ctr_buff, &ctr_code_n, sizeof(long));
-  if (write(ctr_strm, ctr_buff, sizeof(long)) != sizeof(long)) {
+  int32_t ctr_code_n = htonl(ctr_code);
+  memcpy(ctr_buff, &ctr_code_n, sizeof(int32_t));
+  if (write(ctr_strm, ctr_buff, sizeof(int32_t)) != sizeof(int32_t)) {
     fprintf(stderr, "send control message failed:\n");
     exit(-1);
   }

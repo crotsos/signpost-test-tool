@@ -12,7 +12,7 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with pathrate; if not, write to the Free Software
+ aint32_t with pathrate; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
@@ -61,16 +61,16 @@ EXTERN int retransmit;
 
 EXTERN void prntmsg(FILE *fp);
 EXTERN void help(void);
-EXTERN void send_ctr_msg(long ctr_code) ;
-EXTERN long recv_ctr_msg(int ctr_strm, char *ctr_buff);
+EXTERN void send_ctr_msg(int32_t ctr_code) ;
+EXTERN int32_t recv_ctr_msg(int ctr_strm, char *ctr_buff);
 EXTERN void print_bw(FILE *fp, double bw_v) ;
 EXTERN void termint(int exit_code);
 EXTERN void happy_end(double bw_lo, double bw_hi);
 EXTERN double time_to_us_delta(struct timeval tv1, struct timeval tv2) ;
 EXTERN void time_copy(struct timeval time_val_old, struct timeval *time_val_new) ;
-EXTERN void order(double unord_arr[], double ord_arr[], long no_elems);
-EXTERN double get_avg(double data[], long no_values);
-EXTERN double get_std(double data[], long no_values);
+EXTERN void order(double unord_arr[], double ord_arr[], int32_t no_elems);
+EXTERN double get_avg(double data[], int32_t no_values);
+EXTERN double get_std(double data[], int32_t no_values);
 /*Weiling: *bell_kurtosis*/
 EXTERN double get_mode(double ord_data[], short vld_data[], double bin_wd, 
        int no_values, mode_struct *curr_mode);

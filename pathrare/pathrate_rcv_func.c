@@ -12,7 +12,7 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with pathrate; if not, write to the Free Software
+ aint32_t with pathrate; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
@@ -75,12 +75,12 @@ void prntmsg(FILE *fp) {
 /*
   Send a message through the control stream
 */
-void send_ctr_msg(long ctr_code) 
+void send_ctr_msg(int32_t ctr_code) 
 {
   char ctr_buff[24];
-  long ctr_code_n = htonl(ctr_code);
-  memcpy((void*)ctr_buff, &ctr_code_n, sizeof(long));
-  if (write(sock_tcp, ctr_buff, sizeof(long)) != sizeof(long)) {
+  int32_t ctr_code_n = htonl(ctr_code);
+  memcpy((void*)ctr_buff, &ctr_code_n, sizeof(int32_t));
+  if (write(sock_tcp, ctr_buff, sizeof(int32_t)) != sizeof(int32_t)) {
     fprintf(stderr, "send control message failed:\n");
     exit(-1);
   }
@@ -91,14 +91,14 @@ void send_ctr_msg(long ctr_code)
 /*
         Receive an empty message from the control stream
 */
-long recv_ctr_msg(int ctr_strm, char *ctr_buff)
+int32_t recv_ctr_msg(int ctr_strm, char *ctr_buff)
 {
-  long ctr_code;
-  if (read(ctr_strm, ctr_buff, sizeof(long)) != sizeof(long)){
+  int32_t ctr_code;
+  if (read(ctr_strm, ctr_buff, sizeof(int32_t)) != sizeof(int32_t)){
     fprintf(stderr, "recv control message failed:\n");
     return(-1);
   }
-  memcpy(&ctr_code, ctr_buff, sizeof(long));
+  memcpy(&ctr_code, ctr_buff, sizeof(int32_t));
   return(ntohl(ctr_code));
 }
 
@@ -223,9 +223,9 @@ void time_copy(struct timeval time_val_old, struct timeval *time_val_new)
 /* 
   Order an array of doubles using bubblesort 
 */
-void order(double unord_arr[], double ord_arr[], long no_elems)
+void order(double unord_arr[], double ord_arr[], int32_t no_elems)
 {
-  long i,j;
+  int32_t i,j;
   double temp;
   for (i=0; i<no_elems; i++) ord_arr[i]=unord_arr[i];
   for (i=1; i<no_elems; i++) 
@@ -241,9 +241,9 @@ void order(double unord_arr[], double ord_arr[], long no_elems)
 /*
   Compute the average of the set of measurements <data>.
 */
-double get_avg(double data[], long no_values)
+double get_avg(double data[], int32_t no_values)
 {
-   long i;
+   int32_t i;
    double sum_;
    sum_ = 0; 
    for (i=0; i<no_values; i++) sum_ += data[i];
@@ -255,9 +255,9 @@ double get_avg(double data[], long no_values)
 /*
   Compute the standard deviation of the set of measurements <data>.
 */
-double get_std(double data[], long no_values)
+double get_std(double data[], int32_t no_values)
 {
-   long i;
+   int32_t i;
    double sum_, mean;
    mean = get_avg(data, no_values);
    sum_ = 0;
@@ -549,7 +549,7 @@ void sig_alrm(int signo)
 void *ctr_listen(void *arg)
 {
   fd_set readset;
-  long ret_val ;
+  int32_t ret_val ;
   char ctr_buff[8];
   pthread_t  *dad_id;
 
@@ -577,9 +577,9 @@ void *ctr_listen(void *arg)
 /* Receive a complete packet train from the sender */
 int recv_train(int train_len, int * round, struct timeval *time[]) {
   int exp_pack_id=0, exp_train_id=0;
-  int pack_id, round_id, train_id;
+  int32_t pack_id, round_id, train_id;
   char pack_buf[1600];
-  long ctr_code;
+  int32_t ctr_code;
   int pack_sz = 1500;
   int bad_train=0;
   pthread_t th_id, my_id;
@@ -652,11 +652,11 @@ int recv_train(int train_len, int * round, struct timeval *time[]) {
     }
     else {
       gettimeofday(*time+exp_pack_id, (struct timezone*)0);
-      memcpy(&pack_id, pack_buf, sizeof(long));
+      memcpy(&pack_id, pack_buf, sizeof(int32_t));
       pack_id=ntohl(pack_id);
-      memcpy(&train_id, pack_buf+sizeof(long), sizeof(long));
+      memcpy(&train_id, pack_buf+sizeof(int32_t), sizeof(int32_t));
       train_id=ntohl(train_id);
-      memcpy(&round_id, pack_buf+2*sizeof(long), sizeof(long));
+      memcpy(&round_id, pack_buf+2*sizeof(int32_t), sizeof(int32_t));
       round_id=ntohl(round_id);
 
       // printf("Pack %d, %d, %d, %d, %d\n", pack_id, train_id, round_id, exp_pack_id, exp_train_id);
@@ -696,7 +696,7 @@ void help(void) {
   exit(-1);
 }
 
-/* Trying long trains to detect capacity in case interrupt 
+/* Trying int32_t trains to detect capacity in case interrupt 
  * coalescing detected.
  */
 int gig_path(int pack_sz, int round, int k_to_u_latency){
