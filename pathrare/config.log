@@ -1,0 +1,98 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:529: checking for gcc
+configure:642: checking whether the C compiler (gcc  ) works
+configure:658: gcc -o conftest    conftest.c  1>&5
+configure:684: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:689: checking whether we are using GNU C
+configure:698: gcc -E conftest.c
+configure:717: checking whether gcc accepts -g
+configure:775: checking host system type
+configure:911: checking for the pthreads library -lpthreads
+configure:940: gcc -o conftest -g -O2    conftest.c -lpthreads  1>&5
+ld: library not found for -lpthreads
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 931 "configure"
+#include "confdefs.h"
+#include <pthread.h>
+int main() {
+pthread_t th; pthread_join(th, 0);
+                     pthread_attr_init(0); pthread_cleanup_push(0, 0);
+                     pthread_create(0,0,0,0); pthread_cleanup_pop(0); 
+; return 0; }
+configure:900: checking whether pthreads work without any flags
+configure:940: gcc -o conftest -g -O2    conftest.c   1>&5
+configure:972: checking for joinable pthread attribute
+configure:981: gcc -o conftest -g -O2    conftest.c   1>&5
+configure:1023: checking if more special flags are required for pthreads
+configure:1041: checking for cc_r
+configure:1096: checking for main in -lm
+configure:1111: gcc -o conftest -g -O2   conftest.c -lm   1>&5
+configure:1139: checking for main in -lposix4
+configure:1154: gcc -o conftest -g -O2   conftest.c -lposix4  -lm  1>&5
+ld: library not found for -lposix4
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1147 "configure"
+#include "confdefs.h"
+
+int main() {
+main()
+; return 0; }
+configure:1182: checking for socket in -lsocket
+configure:1201: gcc -o conftest -g -O2   conftest.c -lsocket  -lm  1>&5
+ld: library not found for -lsocket
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1190 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char socket();
+
+int main() {
+socket()
+; return 0; }
+configure:1229: checking for gethostbyname in -lnsl
+configure:1248: gcc -o conftest -g -O2   conftest.c -lnsl  -lm  1>&5
+ld: library not found for -lnsl
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1237 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char gethostbyname();
+
+int main() {
+gethostbyname()
+; return 0; }
+configure:1277: checking how to run the C preprocessor
+configure:1298: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1357: checking for ANSI C header files
+configure:1370: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1437: gcc -o conftest -g -O2   conftest.c -lm  1>&5
+configure: In function 'main':
+configure:1432: warning: incompatible implicit declaration of built-in function 'exit'
+configure:1464: checking for fcntl.h
+configure:1474: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1464: checking for strings.h
+configure:1474: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1464: checking for sys/time.h
+configure:1474: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1464: checking for unistd.h
+configure:1474: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1502: checking whether time.h and sys/time.h may both be included
+configure:1516: gcc -c -g -O2  conftest.c 1>&5
+configure:1540: checking for gethostname
+configure:1568: gcc -o conftest -g -O2   conftest.c -lm  1>&5
+configure:1540: checking for gettimeofday
+configure:1568: gcc -o conftest -g -O2   conftest.c -lm  1>&5
+configure:1540: checking for select
+configure:1568: gcc -o conftest -g -O2   conftest.c -lm  1>&5
+configure:1540: checking for socket
+configure:1568: gcc -o conftest -g -O2   conftest.c -lm  1>&5
