@@ -64,8 +64,20 @@ lwt _ =
   in
   lwt _ = 
     Lwt_list.iter_s (
-      fun ns -> 
-        lwt _ = Direct.test ns in 
+      fun ns ->
+        (* can I connect to remote ns *)
+        lwt _ = Direct.test ns in
+
+        (* can I request non dnssec rr types? *)
+        lwt _ = Recursive.test ns false in 
+
+        (* can I query for dnssec rr types? *)
+        lwt _ = Recursive.test ns true in 
+
+        (* check if sig0 can go throught the resolver *)
+
+        (* check if iodine can get through, and 
+         * what is the capacity ? *)
           return () 
     ) nameservers
   in
