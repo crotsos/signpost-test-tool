@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 6b2c113a3d667547eb994928586cfdbf) *)
+(* DO NOT EDIT (digest: 95b7fd0ff4cbee6e9f9266eeee30cf78) *)
 module OASISGettext = struct
 # 21 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/oasis/OASISGettext.ml"
 
@@ -476,11 +476,42 @@ end
 # 476 "myocamlbuild.ml"
 open Ocamlbuild_plugin;;
 let package_default =
-  {MyOCamlbuildBase.lib_ocaml = []; lib_c = []; flags = []; includes = []; }
+  {
+     MyOCamlbuildBase.lib_ocaml = [];
+     lib_c =
+       [
+          ("signpost_test",
+            "src/",
+            [
+               "src/version.h";
+               "src/client.h";
+               "src/tun.h";
+               "src/util.h";
+               "src/common.h";
+               "src/base64.h";
+               "src/base64u.h";
+               "src/encoding.h";
+               "src/base32.h";
+               "src/base128.h";
+               "src/login.h";
+               "src/md5.h";
+               "src/dns.h";
+               "src/read.h";
+               "src/lwt_unix.h";
+               "src/lwt_config.h"
+            ])
+       ];
+     flags =
+       [
+          (["oasis_executable_signpost_test_ccopt"; "compile"],
+            [(OASISExpr.EBool true, S [A "-ccopt"; A "-Isrc/"])])
+       ];
+     includes = [];
+     }
   ;;
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 485 "myocamlbuild.ml"
+# 516 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;

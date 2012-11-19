@@ -1,0 +1,18 @@
+# OASIS_START
+# DO NOT EDIT (digest: 92b416c82f940e2210fb3bb77a5f1d99)
+iodine.o
+client.o
+tun.o
+util.o
+common.o
+base64.o
+base64u.o
+encoding.o
+base32.o
+base128.o
+login.o
+md5.o
+dns.o
+read.o
+lwt_unix_job_iodine.o
+# OASIS_STOP

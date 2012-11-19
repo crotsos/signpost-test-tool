@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 4dcec521adc6b866b2d825e56b7ae8e3)
+# DO NOT EDIT (digest: dbf0e1fee1dd618befdbbdf6ea0f77fb)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -14,12 +14,74 @@
 "_darcs": -traverse
 "_darcs": not_hygienic
 # Executable signpost_test
+<src/*.ml{,i}>: oasis_executable_signpost_test_ccopt
+"src/iodine.c": oasis_executable_signpost_test_ccopt
+"src/client.c": oasis_executable_signpost_test_ccopt
+"src/tun.c": oasis_executable_signpost_test_ccopt
+"src/util.c": oasis_executable_signpost_test_ccopt
+"src/common.c": oasis_executable_signpost_test_ccopt
+"src/base64.c": oasis_executable_signpost_test_ccopt
+"src/base64u.c": oasis_executable_signpost_test_ccopt
+"src/encoding.c": oasis_executable_signpost_test_ccopt
+"src/base32.c": oasis_executable_signpost_test_ccopt
+"src/base128.c": oasis_executable_signpost_test_ccopt
+"src/login.c": oasis_executable_signpost_test_ccopt
+"src/md5.c": oasis_executable_signpost_test_ccopt
+"src/dns.c": oasis_executable_signpost_test_ccopt
+"src/read.c": oasis_executable_signpost_test_ccopt
+"src/lwt_unix_job_iodine.c": oasis_executable_signpost_test_ccopt
+<src/test.{native,byte}>: use_libsignpost_test_stubs
 <src/test.{native,byte}>: pkg_lwt
 <src/test.{native,byte}>: pkg_dns
 <src/test.{native,byte}>: pkg_dns.lwt
 <src/*.ml{,i}>: pkg_lwt
 <src/*.ml{,i}>: pkg_dns
 <src/*.ml{,i}>: pkg_dns.lwt
+"src/iodine.c": pkg_lwt
+"src/iodine.c": pkg_dns
+"src/iodine.c": pkg_dns.lwt
+"src/client.c": pkg_lwt
+"src/client.c": pkg_dns
+"src/client.c": pkg_dns.lwt
+"src/tun.c": pkg_lwt
+"src/tun.c": pkg_dns
+"src/tun.c": pkg_dns.lwt
+"src/util.c": pkg_lwt
+"src/util.c": pkg_dns
+"src/util.c": pkg_dns.lwt
+"src/common.c": pkg_lwt
+"src/common.c": pkg_dns
+"src/common.c": pkg_dns.lwt
+"src/base64.c": pkg_lwt
+"src/base64.c": pkg_dns
+"src/base64.c": pkg_dns.lwt
+"src/base64u.c": pkg_lwt
+"src/base64u.c": pkg_dns
+"src/base64u.c": pkg_dns.lwt
+"src/encoding.c": pkg_lwt
+"src/encoding.c": pkg_dns
+"src/encoding.c": pkg_dns.lwt
+"src/base32.c": pkg_lwt
+"src/base32.c": pkg_dns
+"src/base32.c": pkg_dns.lwt
+"src/base128.c": pkg_lwt
+"src/base128.c": pkg_dns
+"src/base128.c": pkg_dns.lwt
+"src/login.c": pkg_lwt
+"src/login.c": pkg_dns
+"src/login.c": pkg_dns.lwt
+"src/md5.c": pkg_lwt
+"src/md5.c": pkg_dns
+"src/md5.c": pkg_dns.lwt
+"src/dns.c": pkg_lwt
+"src/dns.c": pkg_dns
+"src/dns.c": pkg_dns.lwt
+"src/read.c": pkg_lwt
+"src/read.c": pkg_dns
+"src/read.c": pkg_dns.lwt
+"src/lwt_unix_job_iodine.c": pkg_lwt
+"src/lwt_unix_job_iodine.c": pkg_dns
+"src/lwt_unix_job_iodine.c": pkg_dns.lwt
 <src/test.{native,byte}>: custom
 # OASIS_STOP
 true: annot

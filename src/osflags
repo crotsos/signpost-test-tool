@@ -1,0 +1,36 @@
+#!/bin/sh
+
+case $2 in
+link)
+
+	case $1 in
+		SunOS | solaris)
+			echo '-lflags -cclib -lflags -lsocket -lnsl -lflags -cclib -lflags';
+		;;
+		BeOS)
+			echo '-lflags -cclib -lflags -lsocket -lflags -cclib -lflags -lbind -lflags -cclib -lflags -lbsd';
+		;;
+		Haiku)
+			echo '-lflags -cclib -lflags -lnetwork';
+		;;
+		windows32)
+			echo '-lws2_32 -liphlpapi';
+		;;
+		Linux)
+			[ -e /usr/include/selinux/selinux.h ] && echo '-lflags -cclib -lflags -lselinux';
+		;;
+	esac
+	;;
+cflags)
+	case $1 in
+		BeOS)
+			echo '-cflags -ccopt -cflags  -Dsocklen_t=int';
+		;;
+		Linux)
+			[ -e /usr/include/selinux/selinux.h ] && echo '-cflags -ccopt -cflags  -DHAVE_SETCON';
+		;;
+	esac
+;;
+*)
+;;
+esac

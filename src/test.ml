@@ -21,6 +21,10 @@ open Lwt_log
 open Lwt_unix 
 open Lwt_io 
 
+type 'a t
+  
+external iodine_job : unit -> unit job = "lwt_unix_iodine_job"
+
 let resolver_file = "/etc/resolv.conf" 
 
   let load_resolv_file file =
@@ -50,10 +54,14 @@ let resolver_file = "/etc/resolv.conf"
   with exn -> 
     lwt _ = log ~exn ~level:Error "failed to load resolv.conf" in 
       return ([], "") 
-
+ 
 lwt _ =
   (* setup loggers *)
-  let std_log = !default in 
+(*  let t = run_job (iodine_job ()) in *)
+  let _ = printf "starting tunnel....\n%!" in 
+  lwt _ = run_job ~async_method:(Async_detach) (iodine_job ()) in
+    return ()
+(*  let std_log = !default in 
   let template = "$(date).$(milliseconds) $(loc-file):$(loc-line)[$(pid)]: $(message)" in 
   lwt file_log = file ~template ~mode:`Truncate ~file_name:"signpost-test-result.log"
                    () in 
@@ -62,7 +70,7 @@ lwt _ =
   lwt (nameservers, domain) = 
     load_resolv_file resolver_file 
   in
-  lwt _ = 
+  let a = 
     Lwt_list.iter_s (
       fun ns ->
         (* can I connect to remote ns *)
@@ -81,6 +89,7 @@ lwt _ =
           return () 
     ) nameservers
   in
+  lwt _ = a (*<&> t*) in
   lwt _ = Lwt_log.close file_log in 
-    return ()
+    return () *)
 
