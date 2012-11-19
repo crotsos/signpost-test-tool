@@ -1,5 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: 92b416c82f940e2210fb3bb77a5f1d99)
+# DO NOT EDIT (digest: bf0690578485b774686b4b18211312d2)
+lwt_unix_job_iodine.o
 iodine.o
 client.o
 tun.o
@@ -14,5 +15,4 @@ login.o
 md5.o
 dns.o
 read.o
-lwt_unix_job_iodine.o
 # OASIS_STOP

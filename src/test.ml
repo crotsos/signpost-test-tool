@@ -23,7 +23,6 @@ open Lwt_io
 
 type 'a t
   
-external iodine_job : unit -> unit job = "lwt_unix_iodine_job"
 
 let resolver_file = "/etc/resolv.conf" 
 
@@ -57,11 +56,7 @@ let resolver_file = "/etc/resolv.conf"
  
 lwt _ =
   (* setup loggers *)
-(*  let t = run_job (iodine_job ()) in *)
-  let _ = printf "starting tunnel....\n%!" in 
-  lwt _ = run_job ~async_method:(Async_detach) (iodine_job ()) in
-    return ()
-(*  let std_log = !default in 
+  let std_log = !default in 
   let template = "$(date).$(milliseconds) $(loc-file):$(loc-line)[$(pid)]: $(message)" in 
   lwt file_log = file ~template ~mode:`Truncate ~file_name:"signpost-test-result.log"
                    () in 
@@ -73,7 +68,7 @@ lwt _ =
   let a = 
     Lwt_list.iter_s (
       fun ns ->
-        (* can I connect to remote ns *)
+(*        (* can I connect to remote ns *)
         lwt _ = Direct.test ns in
 
         (* can I request non dnssec rr types? *)
@@ -83,13 +78,16 @@ lwt _ =
         lwt _ = Recursive.test ns true in 
 
         (* check if sig0 can go throught the resolver *)
+        lwt _ = Sig0.test ns in *)
 
         (* check if iodine can get through, and 
          * what is the capacity ? *)
+        lwt _ = Iodine_test.test ns in 
           return () 
     ) nameservers
   in
-  lwt _ = a (*<&> t*) in
+  lwt _ = a in
+  let _ = printf "finishing test...\n%!" in
   lwt _ = Lwt_log.close file_log in 
-    return () *)
+    return () 
 

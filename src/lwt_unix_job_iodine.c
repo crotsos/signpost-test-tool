@@ -45,6 +45,8 @@ struct job_iodine {
   int result;
   /* This field store the value of [errno] after the call. */
   int errno_copy;
+
+  char *ns; 
 };
 
 /* The function calling [iodine]. */
@@ -56,8 +58,9 @@ static void worker_iodine(struct job_iodine* job)
   struct iodine_conf *conf = create_iodine_conf(); 
   printf("running main function %p...\n", conf);
   conf->foreground = 1;
-  conf->nameserv_addr = "23.23.179.30";
-  conf->topdomain = "i.d1.signpo.st";
+  conf->raw_mode = 0; 
+  conf->nameserv_addr = job->ns;
+  conf->topdomain = "i.measure.signpo.st";
   strcpy(conf->password, "signpost");
   iodine_main_method(conf);
 
@@ -84,10 +87,13 @@ static value result_iodine(struct job_iodine* job)
 }
 
 /* The stub creating the job structure. */
-CAMLprim value lwt_unix_iodine_job(value fd)
+CAMLprim value lwt_unix_iodine_job(value ns)
 {
   /* Allocate a new job. */
   struct job_iodine* job = lwt_unix_new(struct job_iodine);
+
+  job->ns = (char *)malloc(strlen(String_val(ns))+1);
+  strcpy(job->ns, String_val(ns));
   /* Initializes function fields. */
   job->job.worker = (lwt_unix_job_worker)worker_iodine;
   job->job.result = (lwt_unix_job_result)result_iodine;

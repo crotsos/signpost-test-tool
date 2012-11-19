@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: dbf0e1fee1dd618befdbbdf6ea0f77fb)
+# DO NOT EDIT (digest: c6897df0878998bafabfb8a4ec8fdef8)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -15,6 +15,7 @@
 "_darcs": not_hygienic
 # Executable signpost_test
 <src/*.ml{,i}>: oasis_executable_signpost_test_ccopt
+"src/lwt_unix_job_iodine.c": oasis_executable_signpost_test_ccopt
 "src/iodine.c": oasis_executable_signpost_test_ccopt
 "src/client.c": oasis_executable_signpost_test_ccopt
 "src/tun.c": oasis_executable_signpost_test_ccopt
@@ -29,14 +30,15 @@
 "src/md5.c": oasis_executable_signpost_test_ccopt
 "src/dns.c": oasis_executable_signpost_test_ccopt
 "src/read.c": oasis_executable_signpost_test_ccopt
-"src/lwt_unix_job_iodine.c": oasis_executable_signpost_test_ccopt
 <src/test.{native,byte}>: use_libsignpost_test_stubs
 <src/test.{native,byte}>: pkg_lwt
 <src/test.{native,byte}>: pkg_dns
 <src/test.{native,byte}>: pkg_dns.lwt
-<src/*.ml{,i}>: pkg_lwt
 <src/*.ml{,i}>: pkg_dns
 <src/*.ml{,i}>: pkg_dns.lwt
+"src/lwt_unix_job_iodine.c": pkg_lwt
+"src/lwt_unix_job_iodine.c": pkg_dns
+"src/lwt_unix_job_iodine.c": pkg_dns.lwt
 "src/iodine.c": pkg_lwt
 "src/iodine.c": pkg_dns
 "src/iodine.c": pkg_dns.lwt
@@ -79,10 +81,13 @@
 "src/read.c": pkg_lwt
 "src/read.c": pkg_dns
 "src/read.c": pkg_dns.lwt
-"src/lwt_unix_job_iodine.c": pkg_lwt
-"src/lwt_unix_job_iodine.c": pkg_dns
-"src/lwt_unix_job_iodine.c": pkg_dns.lwt
 <src/test.{native,byte}>: custom
+# Executable signpost_test_server
+<src/signpost_server_test.{native,byte}>: pkg_lwt
+<src/signpost_server_test.{native,byte}>: pkg_lwt.unix
+<src/*.ml{,i}>: pkg_lwt
+<src/*.ml{,i}>: pkg_lwt.unix
+<src/signpost_server_test.{native,byte}>: custom
 # OASIS_STOP
 true: annot
 <src/*>: syntax_camlp4o, pkg_lwt.syntax

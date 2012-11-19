@@ -120,18 +120,6 @@ open_tun(const char *tun_device)
 }
 
 #else /* BSD */
-static void
-setnonblock(int fd)
-{
-  int flags;
-  flags = fcntl(fd, F_GETFL);
-  if (flags < 0)
-    err(1, "setnonblock: fcntl");
-  flags |= O_NONBLOCK;
-  if (fcntl(fd, F_SETFL, flags) < 0)
-    err(1, "setnonblock, F_SETFL");
-}
-
 int 
 open_tun(const char *tun_device) 
 {
@@ -158,7 +146,6 @@ open_tun(const char *tun_device)
 			if ((tun_fd = open(tun_name, O_RDWR)) >= 0) {
 				fprintf(stderr, "Opened %s\n", tun_name);
 				snprintf(if_name, sizeof(if_name), "tun%d", i);
-                //                setnonblock(tun_fd);
 				return tun_fd;
 			}
 

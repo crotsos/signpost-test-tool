@@ -10,9 +10,17 @@ Plugins:     META (0.3)
 Executable signpost_test
   Path:           src/
   BuildTools:     ocamlbuild
-  CSources:       iodine.c, version.h, client.c, client.h, tun.c, tun.h, util.c, util.h, common.c, common.h, base64.c, base64.h, base64u.c, base64u.h, encoding.c, encoding.h, base32.c, base32.h, base128.c, base128.h, login.c, login.h, md5.c, md5.h, dns.c, dns.h, read.c, read.h, lwt_unix_job_iodine.c, lwt_unix.h, lwt_config.h 
+  CSources:       lwt_unix_job_iodine.c, iodine.c, version.h, client.c, client.h, tun.c, tun.h, util.c, util.h, common.c, common.h, base64.c, base64.h, base64u.c, base64u.h, encoding.c, encoding.h, base32.c, base32.h, base128.c, base128.h, login.c, login.h, md5.c, md5.h, dns.c, dns.h, read.c, read.h, lwt_unix.h, lwt_config.h 
   CCopt:          -Isrc/ 
   MainIs:         test.ml
   Custom:         true
   CompiledObject: best
   BuildDepends:   lwt, dns, dns.lwt
+  
+Executable signpost_test_server
+  Path:           src/
+  BuildTools:     ocamlbuild
+  MainIs:         signpost_server_test.ml
+  Custom:         true
+  CompiledObject: best
+  BuildDepends:   lwt, lwt.unix

@@ -49,63 +49,8 @@ static char *__progname;
 #endif
 
 #define PASSWORD_ENV_VAR "IODINE_PASS"
-
 static void
-sighandler(int sig) 
-{
-	client_stop();
-}
-
-static void
-usage() {
-	extern char *__progname;
-
-	fprintf(stderr, "Usage: %s [-v] [-h] [-f] [-r] [-u user] [-t chrootdir] [-d device] "
-			"[-P password] [-m maxfragsize] [-M maxlen] [-T type] [-O enc] [-L 0|1] [-I sec] "
-			"[-z context] [-F pidfile] [nameserver] topdomain\n", __progname);
-	exit(2);
-}
-
-static void
-help() {
-	extern char *__progname;
-
-	fprintf(stderr, "iodine IP over DNS tunneling client\n");
-	fprintf(stderr, "Usage: %s [-v] [-h] [-f] [-r] [-u user] [-t chrootdir] [-d device] "
-			"[-P password] [-m maxfragsize] [-M maxlen] [-T type] [-O enc] [-L 0|1] [-I sec] "
-			"[-z context] [-F pidfile] [nameserver] topdomain\n", __progname);
-	fprintf(stderr, "Options to try if connection doesn't work:\n");
-	fprintf(stderr, "  -T force dns type: NULL, TXT, SRV, MX, CNAME, A (default: autodetect)\n");
-	fprintf(stderr, "  -O force downstream encoding for -T other than NULL: Base32, Base64, Base64u,\n");
-	fprintf(stderr, "     Base128, or (only for TXT:) Raw  (default: autodetect)\n");
-	fprintf(stderr, "  -I max interval between requests (default 4 sec) to prevent DNS timeouts\n");
-	fprintf(stderr, "  -L 1: use lazy mode for low-latency (default). 0: don't (implies -I1)\n");
-	fprintf(stderr, "  -m max size of downstream fragments (default: autodetect)\n");
-	fprintf(stderr, "  -M max size of upstream hostnames (~100-255, default: 255)\n");
-	fprintf(stderr, "  -r to skip raw UDP mode attempt\n");
-	fprintf(stderr, "  -P password used for authentication (max 32 chars will be used)\n");
-	fprintf(stderr, "Other options:\n");
-	fprintf(stderr, "  -v to print version info and exit\n");
-	fprintf(stderr, "  -h to print this help and exit\n");
-	fprintf(stderr, "  -f to keep running in foreground\n");
-	fprintf(stderr, "  -u name to drop privileges and run as user 'name'\n");
-	fprintf(stderr, "  -t dir to chroot to directory dir\n");
-	fprintf(stderr, "  -d device to set tunnel device name\n");
-	fprintf(stderr, "  -z context, to apply specified SELinux context after initialization\n");
-	fprintf(stderr, "  -F pidfile to write pid to a file\n");
-	fprintf(stderr, "nameserver is the IP number/hostname of the relaying nameserver. if absent, /etc/resolv.conf is used\n");
-	fprintf(stderr, "topdomain is the FQDN that is delegated to the tunnel endpoint.\n");
-
-	exit(0);
-}
-
-static void
-version() {
-	fprintf(stderr, "iodine IP over DNS tunneling client\n");
-	fprintf(stderr, "version: 0.6.0-rc1 from 2010-02-13\n");
-
-	exit(0);
-}
+usage() {}
 
 int
 iodine_main_method(struct iodine_conf *conf)
