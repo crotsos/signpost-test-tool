@@ -59,7 +59,7 @@ static void get_name(char *ifname, int namelen, char *dev_name);
 char if_name[250];
 
 #ifndef WINDOWS32
-#ifdef LINUX
+#if defined (LINUX) || defined (__linux)
 
 #include <sys/ioctl.h>
 #include <net/if.h>
@@ -360,7 +360,7 @@ write_tun(int tun_fd, char *data, size_t len)
 	data += 4;
 	len -= 4;
 #else /* !FREEBSD/DARWIN */
-#ifdef LINUX
+#if defined (LINUX) || defined (__linux)
 	data[0] = 0x00;
 	data[1] = 0x00;
 	data[2] = 0x08;
