@@ -1,7 +1,7 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 95b7fd0ff4cbee6e9f9266eeee30cf78) *)
+(* DO NOT EDIT (digest: 59548e589fc427b68ec301f869acdf75) *)
 module OASISGettext = struct
-# 21 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/oasis/OASISGettext.ml"
+(* # 21 "/home/ubuntu/.opam/system/build/oasis.0.3.0/src/oasis/OASISGettext.ml" *)
 
   let ns_ str =
     str
@@ -24,7 +24,7 @@ module OASISGettext = struct
 end
 
 module OASISExpr = struct
-# 21 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/oasis/OASISExpr.ml"
+(* # 21 "/home/ubuntu/.opam/system/build/oasis.0.3.0/src/oasis/OASISExpr.ml" *)
 
 
 
@@ -116,7 +116,7 @@ end
 
 # 117 "myocamlbuild.ml"
 module BaseEnvLight = struct
-# 21 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/base/BaseEnvLight.ml"
+(* # 21 "/home/ubuntu/.opam/system/build/oasis.0.3.0/src/base/BaseEnvLight.ml" *)
 
   module MapString = Map.Make(String)
 
@@ -214,7 +214,7 @@ end
 
 # 215 "myocamlbuild.ml"
 module MyOCamlbuildFindlib = struct
-# 21 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/plugins/ocamlbuild/MyOCamlbuildFindlib.ml"
+(* # 21 "/home/ubuntu/.opam/system/build/oasis.0.3.0/src/plugins/ocamlbuild/MyOCamlbuildFindlib.ml" *)
 
   (** OCamlbuild extension, copied from 
     * http://brion.inria.fr/gallium/index.php/Using_ocamlfind_with_ocamlbuild
@@ -323,7 +323,7 @@ module MyOCamlbuildFindlib = struct
 end
 
 module MyOCamlbuildBase = struct
-# 21 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml"
+(* # 21 "/home/ubuntu/.opam/system/build/oasis.0.3.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml" *)
 
   (** Base functions for writing myocamlbuild.ml
       @author Sylvain Le Gall
@@ -339,7 +339,7 @@ module MyOCamlbuildBase = struct
   type name = string 
   type tag = string 
 
-# 56 "/Users/cr409/.opam/3.12.1/build/oasis.0.3.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml"
+(* # 56 "/home/ubuntu/.opam/system/build/oasis.0.3.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml" *)
 
   type t =
       {
@@ -504,7 +504,11 @@ let package_default =
      flags =
        [
           (["oasis_executable_signpost_test_ccopt"; "compile"],
-            [(OASISExpr.EBool true, S [A "-ccopt"; A "-Isrc/"])])
+            [(OASISExpr.EBool true, S [A "-ccopt"; A "-Isrc/"])]);
+          (["oasis_executable_signpost_test_cclib"; "link"],
+            [(OASISExpr.EBool true, S [A "-cclib"; A "-Iz"])]);
+          (["oasis_executable_signpost_test_cclib"; "ocamlmklib"; "c"],
+            [(OASISExpr.EBool true, S [A "-Iz"])])
        ];
      includes = [];
      }
@@ -512,6 +516,6 @@ let package_default =
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 516 "myocamlbuild.ml"
+# 520 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;

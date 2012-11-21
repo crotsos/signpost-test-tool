@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: c6897df0878998bafabfb8a4ec8fdef8)
+# DO NOT EDIT (digest: a775cb6dd99dcd62aee8381882a98fae)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -30,6 +30,11 @@
 "src/md5.c": oasis_executable_signpost_test_ccopt
 "src/dns.c": oasis_executable_signpost_test_ccopt
 "src/read.c": oasis_executable_signpost_test_ccopt
+<src/test.{native,byte}>: oasis_executable_signpost_test_cclib
+"src/libsignpost_test_stubs.lib": oasis_executable_signpost_test_cclib
+"src/dllsignpost_test_stubs.dll": oasis_executable_signpost_test_cclib
+"src/libsignpost_test_stubs.a": oasis_executable_signpost_test_cclib
+"src/dllsignpost_test_stubs.so": oasis_executable_signpost_test_cclib
 <src/test.{native,byte}>: use_libsignpost_test_stubs
 <src/test.{native,byte}>: pkg_lwt
 <src/test.{native,byte}>: pkg_dns
