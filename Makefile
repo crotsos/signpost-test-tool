@@ -7,8 +7,7 @@ ARCH = `uname -m`
 
 LDFLAGS +=  -lflags -cclib -lflags -lz \
 		$(shell sh src/osflags $(TARGETOS) link) \
-		-lflags -cclib -lflags -lcrypto \
-		-lflags -cclib -lflags -L/lib/x86_64-linux-gnu
+		-lflags -cclib -lflags -lcrypto
 CFLAGS += -cflags -ccopt -cflags -D$(OS) -cflags -ccopt -cflags -pedantic $(shell sh src/osflags $(TARGETOS) cflags)
 
 J ?= 2

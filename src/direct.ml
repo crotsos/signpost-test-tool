@@ -24,6 +24,8 @@ open Lwt_io
 open Dns_resolver
 open Dns.Packet
 
+open Config
+
 let sp_ns_addr = "ns.measure.signpo.st"
 
 let hostname = "types.a.measure.signpo.st"
@@ -32,17 +34,22 @@ let test ns =
 (*    lwt host = Lwt_unix.gethostbyname sp_ns_addr in 
     let ip = Unix.string_of_inet_addr 
               (Array.get host.Unix.h_addr_list 0) in *)
-    let ip = "54.243.31.36" in 
-    let config = ( `Static([(ip, 53)], [""]) ) in
+    let config = ( `Static([(measure_server_ip, 53)], [""]) ) in
+
     lwt resolver = create ~config () in 
     lwt pkt = resolve resolver Q_IN Q_A 
               (Dns.Name.string_to_domain_name hostname) in 
-    let _ = log ~level:Error "direct success" in  
+    lwt _ = 
+      if (List.length pkt.answers > 0) then 
+        log ~level:Error "direct:result:true"
+      else 
+        log ~level:Error "direct:result:false"
+    in 
     lwt _ = 
       log ~level:Error 
-      (sprintf "direct returned %s" (Dns.Packet.to_string pkt)) in  
+      (sprintf "direct:return:%s" (Dns.Packet.to_string pkt)) in  
       return ()
   with exn ->
-    log ~exn ~level:Error "direct test failed"
+    log ~exn ~level:Error "direct:result:true:failed:"
 
 
