@@ -78,26 +78,26 @@ let test id nameservers =
     Lwt_list.iter_s (
       fun ns ->
           (* can I connect to remote ns *)
-(*          lwt _ = Direct.test ns in *)
+          lwt _ = Direct.test ns in 
 
           (* can I request non dnssec rr types? *)
-(*          lwt _ = Recursive.test ns false in *)
+          lwt _ = Recursive.test ns false in 
 
           (* rerequesting the records to check if ttl is respected *)
-(*          lwt _ = Recursive.test ns false in *)
+          lwt _ = Recursive.test ns false in 
 
           (* can I query for dnssec rr types? *)
-(*          lwt _ = Recursive.test ns true in *)
+          lwt _ = Recursive.test ns true in 
   
           (* multiple queries and rr in queries *)
-(*          lwt _ = Multi.test ns in *)
+          lwt _ = Multi.test ns in 
 
           (* check if sig0 can go throught the resolver *)
           lwt _ = Sig0.test ns in 
 
           (* check if iodine can get through, and 
            * what is the capacity ? *)
-(*          lwt _ = Iodine_test.test id ns in *)
+          lwt _ = Iodine_test.test id ns in 
             return () 
     ) nameservers
   in
