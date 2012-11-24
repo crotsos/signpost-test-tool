@@ -111,4 +111,4 @@ let test ns dnssec =
       ) names in 
         return ()
   with exn ->
-    log ~exn ~level:Error "recursive test failed"
+    log ~exn ~level:Error (sprintf "recursive:exception:%s:" (string_of_bool dnssec)) 
