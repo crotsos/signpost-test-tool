@@ -80,8 +80,7 @@ let rcv_data_test_fd stats fd =
     in
       return (printf "test finished\n%!")
   with exn -> 
-    let _ = printf "error %s\n%!" (Printexc.to_string exn) in
-      return ()
+    return (printf "error %s\n%!" (Printexc.to_string exn))
 
 (* upload test function *)
 let snd_data_test_fd stats fd = 
@@ -99,16 +98,17 @@ let snd_data_test_fd stats fd =
         return ()
     done
 
+
 (* Output partial results *)
 let print_stats dir logger stats =
-    let start = Unix.gettimeofday () in
-      while_lwt (start +. duration +. 1.0 >= (Unix.gettimeofday ())) do
-        lwt _ = Lwt_unix.sleep 1.0 in
-        lwt _ = log ~level:Error ~logger:logger
-          (sprintf "tcp_rate:%s:%ld" dir stats.bin_data) in
-        let _ = stats.bin_data <- 0l in
-          return ()
-      done
+  let start = Unix.gettimeofday () in
+    while_lwt (start +. duration +. 1.0 >= (Unix.gettimeofday ())) do
+      lwt _ = Lwt_unix.sleep 1.0 in
+      lwt _ = log ~level:Error ~logger:logger
+        (sprintf "tcp_rate:%s:%ld" dir stats.bin_data) in
+      let _ = stats.bin_data <- 0l in
+        return ()
+    done
 
 let sockaddr_to_string = function
   | ADDR_INET (ip, port) -> 
@@ -161,8 +161,8 @@ let measure_t st =
             with exn -> 
               log ~logger ~exn ~level:Error "measurement_err" 
           end
-    with exn ->
-      return (printf "measurement error %s\n%!" (Printexc.to_string exn))
+      with exn ->
+        return (printf "measurement error %s\n%!" (Printexc.to_string exn))
 
     done
 
@@ -252,13 +252,11 @@ let run_test st test_id src in_ch out_ch () =
     let _ = st.in_progress <- 
       List.filter (fun (id, _) -> 
         not (test_id = id) ) st.in_progress in
-    let _ = tcpdump_eth#terminate in 
+(*    let _ = tcpdump_eth#terminate in 
     let _ = tcpdump_dns#terminate in 
     let _ = Unix.close pcap_eth_fd in 
-    let _ = Unix.close pcap_dns_fd in 
-    lwt _ = Lwt_log.close file_log in 
+    let _ = Unix.close pcap_dns_fd in *)
       return ()
-
 
 (* rate control mechanism *)
 let process_ctrl st test_id src in_ch out_ch = 
@@ -276,8 +274,9 @@ let process_ctrl st test_id src in_ch out_ch =
                   ^ "\n" in 
           lwt _ = Lwt_chan.output_string out_ch reply in 
           lwt _ = Lwt_chan.flush out_ch in 
-          lwt _ = Lwt_mutex.with_lock st.lock  
-                    (run_test st test_id src in_ch out_ch) in 
+          lwt _ = 
+            Lwt_mutex.with_lock st.lock  
+            (run_test st test_id src in_ch out_ch) in 
             return ()
  
       | _ -> 
@@ -315,9 +314,9 @@ let open_ssl_server () =
 
 (* control server *)
 let control_t st = 
-  try_lwt
     let (fd, ctx) = open_ssl_server () in 
       while_lwt true do
+        try_lwt
         let test_id = get_new_id st in
         
         (* setup the required socket state *)
@@ -326,18 +325,22 @@ let control_t st =
         let in_ch = Lwt_ssl.in_channel_of_descr client_fd in 
         let out_ch = Lwt_ssl.out_channel_of_descr client_fd in 
  
-       (* start processing the control channel *)
-        let _ = ignore_result 
-          (lwt _ = process_ctrl st test_id src in_ch out_ch in 
-            Lwt_ssl.close client_fd 
-          ) in 
-          return () 
+       (* start processing the control channel *) 
+          let _ = ignore_result 
+            (lwt _ = process_ctrl st test_id src in_ch out_ch in 
+              Lwt_ssl.close client_fd 
+            ) in 
+            return () 
+        with exn ->
+          return (printf "ctrl client error:%s\n%!" (Printexc.to_string exn))
       done
-  with exn ->
-    let _ = printf "ctrl client error:%s\n%!" (Printexc.to_string exn) in 
-      return ()
 
 lwt _ =
   let _ = Ssl.init () in 
-  let st = init_state () in 
-    measure_t st <?> control_t st
+  let st = init_state () in
+  let _ = Sys.signal Sys.sigpipe Sys.Signal_ignore in 
+  try_lwt
+    lwt _ = measure_t st <?> control_t st in
+      return (printf "returned all threads\n%!")
+  with exn -> 
+    return (printf "measurement error %s\n%!" (Printexc.to_string exn))
