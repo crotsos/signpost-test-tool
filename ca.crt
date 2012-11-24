@@ -1,0 +1,68 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            8c:83:21:54:6e:ca:08:e5
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=UK, ST=Some-State, O=University of Cambridge, Computer Laboratory, OU=Education, CN=signpost project/emailAddress=cl-signpost@lists.cam.ac.uk
+        Validity
+            Not Before: Nov 21 13:43:38 2012 GMT
+            Not After : Nov 21 13:43:38 2015 GMT
+        Subject: C=UK, ST=Some-State, O=University of Cambridge, Computer Laboratory, OU=Education, CN=signpost project/emailAddress=cl-signpost@lists.cam.ac.uk
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:bd:52:b5:c7:57:3b:15:9e:49:1e:ed:d9:76:dd:
+                    2e:a9:7a:0a:5b:f5:5b:c4:9e:50:fb:25:48:bb:5b:
+                    26:05:13:13:09:49:87:cb:8e:46:99:1d:65:c6:b9:
+                    28:78:d4:6e:bd:f0:de:a5:8a:6d:19:85:65:44:53:
+                    2f:03:80:df:c4:0e:56:85:cb:4d:bc:4a:ef:b0:44:
+                    ed:01:8e:98:70:8c:78:f0:14:31:a6:78:38:08:4b:
+                    71:1b:b0:18:f4:59:3b:4f:78:7a:9e:a7:0b:6c:1e:
+                    9e:1a:a5:88:3f:49:04:3f:13:3a:2b:60:c2:41:ff:
+                    4f:3c:07:c3:80:63:c1:f6:93
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                DF:34:31:60:7C:29:F8:01:20:47:89:BA:B3:57:F7:F7:01:D5:E8:DD
+            X509v3 Authority Key Identifier: 
+                keyid:DF:34:31:60:7C:29:F8:01:20:47:89:BA:B3:57:F7:F7:01:D5:E8:DD
+                DirName:/C=UK/ST=Some-State/O=University of Cambridge, Computer Laboratory/OU=Education/CN=signpost project/emailAddress=cl-signpost@lists.cam.ac.uk
+                serial:8C:83:21:54:6E:CA:08:E5
+
+            X509v3 Basic Constraints: 
+                CA:TRUE
+    Signature Algorithm: sha1WithRSAEncryption
+        9f:65:e6:7a:97:ac:6a:9e:d7:34:fa:14:e9:a0:a1:ab:0c:bc:
+        b2:a4:5e:82:2f:ca:7e:cb:05:4c:82:eb:2e:fb:b8:36:10:35:
+        b0:c0:fc:2b:2c:a2:76:6f:7d:e2:3f:88:9c:6d:9d:06:a4:11:
+        c6:31:35:86:95:90:ad:3e:2b:ee:41:07:b2:73:8d:e4:02:b0:
+        13:fb:f6:7e:54:38:02:98:59:25:a6:68:15:cd:16:e1:cd:ab:
+        93:26:b0:ce:eb:a2:a1:04:85:99:28:80:99:d3:cb:d7:49:e4:
+        d5:26:aa:3a:da:6f:83:2c:77:5a:93:c4:8e:11:50:b7:fb:f1:
+        1a:95
+-----BEGIN CERTIFICATE-----
+MIIEBzCCA3CgAwIBAgIJAIyDIVRuygjlMA0GCSqGSIb3DQEBBQUAMIG0MQswCQYD
+VQQGEwJVSzETMBEGA1UECBMKU29tZS1TdGF0ZTE1MDMGA1UEChMsVW5pdmVyc2l0
+eSBvZiBDYW1icmlkZ2UsIENvbXB1dGVyIExhYm9yYXRvcnkxEjAQBgNVBAsTCUVk
+dWNhdGlvbjEZMBcGA1UEAxMQc2lnbnBvc3QgcHJvamVjdDEqMCgGCSqGSIb3DQEJ
+ARYbY2wtc2lnbnBvc3RAbGlzdHMuY2FtLmFjLnVrMB4XDTEyMTEyMTEzNDMzOFoX
+DTE1MTEyMTEzNDMzOFowgbQxCzAJBgNVBAYTAlVLMRMwEQYDVQQIEwpTb21lLVN0
+YXRlMTUwMwYDVQQKEyxVbml2ZXJzaXR5IG9mIENhbWJyaWRnZSwgQ29tcHV0ZXIg
+TGFib3JhdG9yeTESMBAGA1UECxMJRWR1Y2F0aW9uMRkwFwYDVQQDExBzaWducG9z
+dCBwcm9qZWN0MSowKAYJKoZIhvcNAQkBFhtjbC1zaWducG9zdEBsaXN0cy5jYW0u
+YWMudWswgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAL1StcdXOxWeSR7t2Xbd
+Lql6Clv1W8SeUPslSLtbJgUTEwlJh8uORpkdZca5KHjUbr3w3qWKbRmFZURTLwOA
+38QOVoXLTbxK77BE7QGOmHCMePAUMaZ4OAhLcRuwGPRZO094ep6nC2wenhqliD9J
+BD8TOitgwkH/TzwHw4BjwfaTAgMBAAGjggEdMIIBGTAdBgNVHQ4EFgQU3zQxYHwp
++AEgR4m6s1f39wHV6N0wgekGA1UdIwSB4TCB3oAU3zQxYHwp+AEgR4m6s1f39wHV
+6N2hgbqkgbcwgbQxCzAJBgNVBAYTAlVLMRMwEQYDVQQIEwpTb21lLVN0YXRlMTUw
+MwYDVQQKEyxVbml2ZXJzaXR5IG9mIENhbWJyaWRnZSwgQ29tcHV0ZXIgTGFib3Jh
+dG9yeTESMBAGA1UECxMJRWR1Y2F0aW9uMRkwFwYDVQQDExBzaWducG9zdCBwcm9q
+ZWN0MSowKAYJKoZIhvcNAQkBFhtjbC1zaWducG9zdEBsaXN0cy5jYW0uYWMudWuC
+CQCMgyFUbsoI5TAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4GBAJ9l5nqX
+rGqe1zT6FOmgoasMvLKkXoIvyn7LBUyC6y77uDYQNbDA/CssonZvfeI/iJxtnQak
+EcYxNYaVkK0+K+5BB7JzjeQCsBP79n5UOAKYWSWmaBXNFuHNq5MmsM7roqEEhZko
+gJnTy9dJ5NUmqjrab4Msd1qTxI4RULf78RqV
+-----END CERTIFICATE-----
