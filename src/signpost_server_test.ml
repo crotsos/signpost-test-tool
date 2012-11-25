@@ -252,10 +252,10 @@ let run_test st test_id src in_ch out_ch () =
     let _ = st.in_progress <- 
       List.filter (fun (id, _) -> 
         not (test_id = id) ) st.in_progress in
-(*    let _ = tcpdump_eth#terminate in 
+    let _ = tcpdump_eth#terminate in 
     let _ = tcpdump_dns#terminate in 
     let _ = Unix.close pcap_eth_fd in 
-    let _ = Unix.close pcap_dns_fd in *)
+    let _ = Unix.close pcap_dns_fd in 
       return ()
 
 (* rate control mechanism *)
