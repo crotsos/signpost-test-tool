@@ -102,7 +102,7 @@ let snd_data_test_fd stats fd =
 (* Output partial results *)
 let print_stats dir logger stats =
   let start = Unix.gettimeofday () in
-    while_lwt (start +. duration +. 1.0 >= (Unix.gettimeofday ())) do
+    while_lwt (start +. duration +. 9.0 >= (Unix.gettimeofday ())) do
       lwt _ = Lwt_unix.sleep 1.0 in
       lwt _ = log ~level:Error ~logger:logger
         (sprintf "tcp_rate:%s:%ld" dir stats.bin_data) in
@@ -193,12 +193,12 @@ let run_test st test_id src in_ch out_ch () =
     Lwt_process.open_process_none 
       ~stdout:(Lwt_process.(`FD_copy pcap_eth_fd)) 
       ~stderr:(Lwt_process.(`FD_copy pcap_eth_fd))
-      ("tcpdump", [|"tcpdump"; "-i";intf; "-w";pcap_eth_file;|]) in 
+      ("tcpdump", [|"tcpdump"; "-i";"eth0"; "-w";pcap_eth_file;|]) in 
   let tcpdump_dns = 
     Lwt_process.open_process_none 
       ~stdout:(Lwt_process.(`FD_copy pcap_dns_fd)) 
       ~stderr:(Lwt_process.(`FD_copy pcap_dns_fd))
-      ("tcpdump", [|"tcpdump"; "-i";intf; "-w";pcap_dns_file;|]) in 
+      ("tcpdump", [|"tcpdump"; "-i";"dns0"; "-w";pcap_dns_file;|]) in 
      let addr =
       match src with
       | ADDR_INET (ip, _) -> ip
