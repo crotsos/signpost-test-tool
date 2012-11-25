@@ -27,21 +27,38 @@ open Config
 
 external iodine_job : string -> unit job = "lwt_unix_iodine_job"
 
-let run_iodine ns t = 
-  (t <?>
-      run_job ~async_method:(Async_detach) (iodine_job ns))
+let run_iodine ns direct t =
+  (* ./iodine/bin/iodine -f -P signpost 8.8.8.8 i.measure.signpo.st *)
+  let param = 
+  if direct then 
+    ("./iodine/bin/iodine", [|"./iodine/bin/iodine"; 
+      "-f";"-P";password;ns;"i.measure.signpo.st";|] )  
+  else
+      ("./iodine/bin/iodine", [|"./iodine/bin/iodine"; 
+      "-f";"-r";"-P";password;ns;"i.measure.signpo.st";|] ) 
+  in
+
+  let iodine = 
+    Lwt_process.open_process_none param in 
+  lwt _ = t in 
+  let _ = iodine#terminate in 
+    return ()
+(*
+  join [t;
+      (run_job ~async_method:(Async_detach) (iodine_job ns))]
+*)
 
 type tcp_stats = {
   mutable send_data: int32;
   mutable bin_data: int32;
 }
 
-let snd_data stats fd = 
+let snd_data stats fd size = 
   let rand = open_in "/dev/urandom" in 
   let start = Unix.gettimeofday () in 
   let buf = String.create 4096 in 
     while_lwt (start +. duration >= (Unix.gettimeofday ())) do 
-      let len = Pervasives.input rand buf 0 2046 in 
+      let len = Pervasives.input rand buf 0 size in 
       lwt len = send fd buf 0 len [] in
       let _ = stats.send_data <- 
         Int32.add stats.send_data (Int32.of_int len) in 
@@ -64,36 +81,33 @@ let rcv_data stats fd =
       return ()
     done
 
-let print_stats typ stats = 
+let print_stats typ dir stats = 
   let start = Unix.gettimeofday () in 
     while_lwt (start +. duration +. 1.0 >= (Unix.gettimeofday ())) do 
       lwt _ = Lwt_unix.sleep 1.0 in 
       lwt _ = log ~level:Error 
-      (sprintf "tcp_rate:%s:%ld" typ stats.bin_data) in 
+      (sprintf "tcp_rate:%s:%s:%ld" typ dir stats.bin_data) in 
       let _ = stats.bin_data <- 0l in 
         return ()
     done
 
-let tcp_test test_id stats host = 
+let tcp_test typ test_id stats host size = 
   try_lwt 
     let fd = socket PF_INET SOCK_STREAM 0 in 
 
     let addr = Unix.inet_addr_of_string host in  
-(*    lwt host = 
-      lwt host = Lwt_unix.gethostbyaddr host in
-        return (host.h_addr_list.(0))
-    in*)
-    
+   
     let dest = ADDR_INET(addr, measurement_port) in
     lwt _ = connect fd dest in 
     let buf = sprintf "%06ld" test_id in 
     lwt _ = send fd buf 0 6 [] in 
-    lwt _ = snd_data stats fd <&> print_stats "snd" stats in
+    lwt _ = snd_data stats fd size <&> print_stats typ "snd" stats in
 
     let _ = stats.send_data <- 0l in 
     let _ = stats.bin_data <- 0l in
     let _ = printf "restart test...\n%!" in
-    lwt _ = rcv_data stats fd <&> print_stats "rcv" stats in 
+    lwt _ = Lwt_unix.sleep 9.0 in 
+    lwt _ = rcv_data stats fd <&> print_stats typ "rcv" stats in 
     lwt _ = Lwt_unix.close fd in 
       return ()
   with exn -> 
@@ -104,15 +118,25 @@ let tcp_test test_id stats host =
 
 let test id ns =
   try_lwt 
-    let (t, u) = Lwt.wait () in 
     let stats = {send_data=0l; bin_data=0l;} in
-    let dst_ip = "127.0.0.1" in (*"54.243.31.36" *) 
-    lwt _ = tcp_test id stats dst_ip in 
-(*    let _ = ignore_result (run_iodine ns t) in *)
-    lwt _ = log ~level:Error "iodine_test running" in 
-  
+    let dst_ip = measure_server_ip in   
+    let (t, u) = Lwt.wait () in
+    let _ = ignore_result (run_iodine ns false t) in 
+    lwt _ = Lwt_unix.sleep 10.0 in
+    lwt _ = tcp_test "direct" id stats dst_ip 4096 in 
+
+    let dst_ip = measure_iodine_ip in
+    lwt _ = tcp_test "iodine_ns" id stats dst_ip 512 in 
+    let _ = wakeup u () in 
+
+    let (t, u) = Lwt.wait () in
+    let _ = ignore_result (run_iodine measure_server_ip true t) in 
+    lwt _ = Lwt_unix.sleep 30.0 in
+    let dst_ip = measure_iodine_ip in
+    lwt _ = tcp_test "iodine_d" id stats dst_ip 2046 in 
+    let _ = wakeup u () in 
+   
 (*   lwt _ = Lwt_unix.sleep 20.0 in *)
-   let _ = wakeup u () in 
      return ()
   with exn ->
-    log ~exn ~level:Error "direct test failed"
+    log ~exn ~level:Error "iodine_failed"
