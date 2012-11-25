@@ -288,6 +288,14 @@ let process_ctrl st test_id src in_ch out_ch =
           lwt _ = Lwt_chan.flush out_ch in
            return ()
     in
+
+    printf "1\n%!"; 
+    lwt len = Lwt_io.read_value in_ch in 
+    printf "1\n%!"; 
+    let buf = String.create len in 
+    printf "2\n%!"; 
+    lwt _ = Lwt_io.read_into_exactly in_ch buf 0 len in
+    let _ = printf "client log : %s\n%!" buf in 
     lwt _ = Lwt_chan.close_in in_ch <&> 
               Lwt_chan.close_out out_ch in 
        return ()
