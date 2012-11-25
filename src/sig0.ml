@@ -36,13 +36,14 @@ let test ns =
     lwt resolver = create ~config () in 
     lwt pkt = resolve resolver Q_IN Q_A 
               (Dns.Name.string_to_domain_name hostname) in 
-    let _ = log ~level:Error "direct success" in  
+    lwt _ = log ~level:Error "sig0:result:true" in  
+    lwt _ = log ~level:Error (sprintf "sig0:returned:%s" (to_string pkt)) in
     lwt _ = 
       log ~level:Error 
       (sprintf "direct returned %s" (Dns.Packet.to_string pkt)) in  
       return ()
   with exn ->
-    log ~exn ~level:Error "direct test failed"
+    log ~exn ~level:Error "sig0:result:false"
 
 
 

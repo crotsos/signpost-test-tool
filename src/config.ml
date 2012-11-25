@@ -16,9 +16,11 @@
 
 let measure_server_ip = "54.243.31.36"
 let measure_server_name = "ns.measure.signpo.st"
+let measure_iodine_ip = "172.16.11.1"
 
 let measurement_port = 5353
 let ctrl_port = 5355
+let password="signpost"
 let intf = "en0"
 let iodine_intf = "dns0"
 let result_dir = 
