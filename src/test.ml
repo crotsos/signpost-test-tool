@@ -65,7 +65,7 @@ let control_t () =
   
     let fd = socket PF_INET SOCK_STREAM 0 in
     (* connecting socket to control channel *)
-    let addr = Unix.inet_addr_of_string "127.0.0.1" (* host *) in  
+    let addr = Unix.inet_addr_of_string measure_server_ip in  
     let dest = ADDR_INET(addr, ctrl_port) in
     lwt _ = connect fd dest in 
     lwt client_fd = Lwt_ssl.ssl_connect fd ctx in
@@ -78,8 +78,8 @@ let test id nameservers =
     Lwt_list.iter_s (
       fun ns ->
           (* can I connect to remote ns *)
-          lwt _ = Direct.test ns in 
-
+         lwt _ = Direct.test ns in 
+(* 
           (* can I request non dnssec rr types? *)
           lwt _ = Recursive.test ns false in 
 
@@ -94,10 +94,10 @@ let test id nameservers =
 
           (* check if sig0 can go throught the resolver *)
           lwt _ = Sig0.test ns in 
-
+*)
           (* check if iodine can get through, and 
            * what is the capacity ? *)
-          lwt _ = Iodine_test.test id ns in 
+(*          lwt _ = Iodine_test.test id ns in *)
             return () 
     ) nameservers
   in
@@ -155,10 +155,29 @@ lwt _ =
 
     in
     lwt _ = run_test_inner () in 
-    lwt _ = log ~level:Error
+
+
+   lwt _ = log ~level:Error
               "--------- Finishing signpost dns test ---------" in
-    lwt _ = Lwt_log.close file_log in 
-      return () 
+    lwt _ = Lwt_log.close file_log in
+    let get_bytes_from_file filename =
+      let ch = open_in filename in
+      let len = in_channel_length ch in 
+      let buf = String.create len in
+      let _ = 
+        try 
+          Pervasives.input ch buf 0 len 
+        with _ -> 0
+      in
+      let _ = close_in ch in 
+        buf
+    in
+    let log_data = get_bytes_from_file "signpost-test-result.log" in 
+    lwt _ = Lwt_io.write_value ch_out (String.length log_data) in 
+    lwt _ = Lwt_io.write ch_out log_data in 
+    let _ = printf "file content is \n%s\n%!" 
+      (get_bytes_from_file "signpost-test-result.log") in 
+       return () 
   with exn -> 
     lwt _ = log ~level:Error ~exn 
               (sprintf "client_error:%s\n%!" (Printexc.to_string exn)) in 
