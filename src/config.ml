@@ -18,11 +18,11 @@ let measure_server_ip = "54.243.31.36"
 let measure_server_name = "ns.measure.signpo.st"
 
 let measurement_port = 5353
-let ctrl_port = 5354
+let ctrl_port = 5355
 let intf = "en0"
-let iodine_intf = "tun0"
+let iodine_intf = "dns0"
 let result_dir = 
-  "/Users/cr409/signpost-test-results"
+  "/home/ubuntu/signpost-test-results"
 
 let duration = 10.0
 
