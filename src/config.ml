@@ -26,6 +26,6 @@ let iodine_intf = "dns0"
 let result_dir = 
   "/home/ubuntu/signpost-test-results"
 
-let duration = 10.0
+let duration = 60.0
 
 

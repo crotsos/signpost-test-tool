@@ -80,7 +80,7 @@ let test id nameservers =
           (* can I connect to remote ns *)
          lwt _ = Direct.test ns in 
  
-          (* can I request non dnssec rr types? *)
+(*          (* can I request non dnssec rr types? *)
           lwt _ = Recursive.test ns false in 
 
           (* rerequesting the records to check if ttl is respected *)
@@ -98,6 +98,7 @@ let test id nameservers =
           (* check if iodine can get through, and 
            * what is the capacity ? *)
           lwt _ = Iodine_test.test id ns in 
+*)
             return () 
     ) nameservers
   in
@@ -135,7 +136,14 @@ lwt _ =
       lwt req = Lwt_chan.input_line ch_in in 
       let req = Jsonrpc.call_of_string req in
         if(req.Rpc.name = "start_test") then
-          test id nameservers
+          lwt _ = test id nameservers in 
+          let fin = (Jsonrpc.string_of_call 
+                       Rpc.({name="end_test";params=[Rpc.Null];})) 
+                        ^ "\n" in 
+          lwt _ = Lwt_chan.output_string ch_out fin in 
+          lwt _ = Lwt_chan.flush ch_out in
+          lwt _ = Lwt_chan.input_line ch_in in 
+            return () 
         else
           lwt _ = log ~level:Error 
           (sprintf "ignoring request %s\n%!" req.Rpc.name) in
@@ -146,12 +154,7 @@ lwt _ =
           lwt _ = Lwt_chan.output_string ch_out reply in 
           lwt _ = Lwt_chan.flush ch_out in 
           lwt _ = run_test_inner () in 
-          let fin = (Jsonrpc.string_of_call 
-                       Rpc.({name="end_test";params=[Rpc.Null];})) 
-                        ^ "\n" in 
-          lwt _ = Lwt_chan.output_string ch_out fin in 
-          lwt _ = Lwt_chan.flush ch_out in
-            return ()
+           return ()
 
     in
     lwt _ = run_test_inner () in 
@@ -159,6 +162,7 @@ lwt _ =
 
    lwt _ = log ~level:Error
               "--------- Finishing signpost dns test ---------" in
+    
     lwt _ = Lwt_log.close file_log in
     let get_bytes_from_file filename = 
       let ch = open_in filename in
@@ -176,7 +180,9 @@ lwt _ =
       let _ = close_in ch in 
         buf
     in
-    let log_data = get_bytes_from_file "signpost-test-result.log" in 
+    let log_data = get_bytes_from_file "signpost-test-result.log" in
+    let _ = printf "sending data %s\n%!"  (string_of_int (String.length
+    log_data)) in 
     lwt _ = Lwt_io.write_line ch_out 
               (string_of_int (String.length log_data)) in 
     lwt _ = Lwt_io.write ch_out log_data in 
