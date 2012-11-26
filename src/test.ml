@@ -80,7 +80,7 @@ let test id nameservers =
           (* can I connect to remote ns *)
          lwt _ = Direct.test ns in 
  
-(*          (* can I request non dnssec rr types? *)
+          (* can I request non dnssec rr types? *)
           lwt _ = Recursive.test ns false in 
 
           (* rerequesting the records to check if ttl is respected *)
@@ -98,7 +98,7 @@ let test id nameservers =
           (* check if iodine can get through, and 
            * what is the capacity ? *)
           lwt _ = Iodine_test.test id ns in 
-*)
+
             return () 
     ) nameservers
   in

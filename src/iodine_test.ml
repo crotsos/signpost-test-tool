@@ -122,7 +122,6 @@ let test id ns =
     let dst_ip = measure_server_ip in   
     let (t, u) = Lwt.wait () in
     let _ = ignore_result (run_iodine ns false t) in 
-    lwt _ = Lwt_unix.sleep 10.0 in
     lwt _ = tcp_test "direct" id stats dst_ip 4096 in 
 
     let dst_ip = measure_iodine_ip in
@@ -131,12 +130,11 @@ let test id ns =
 
     let (t, u) = Lwt.wait () in
     let _ = ignore_result (run_iodine measure_server_ip true t) in 
-    lwt _ = Lwt_unix.sleep 30.0 in
+    lwt _ = Lwt_unix.sleep 10.0 in
     let dst_ip = measure_iodine_ip in
     lwt _ = tcp_test "iodine_d" id stats dst_ip 2046 in 
     let _ = wakeup u () in 
    
-(*   lwt _ = Lwt_unix.sleep 20.0 in *)
      return ()
   with exn ->
     log ~exn ~level:Error "iodine_failed"
