@@ -136,7 +136,13 @@ lwt _ =
       lwt req = Lwt_chan.input_line ch_in in 
       let req = Jsonrpc.call_of_string req in
         if(req.Rpc.name = "start_test") then
-          lwt _ = test id nameservers in 
+          let reply = 
+            (Jsonrpc.string_of_response 
+              Rpc.({success=true;contents=Rpc.Null;})) 
+                  ^ "\n" in 
+          lwt _ = Lwt_chan.output_string ch_out reply in 
+          lwt _ = Lwt_chan.flush ch_out in 
+           lwt _ = test id nameservers in 
           let fin = (Jsonrpc.string_of_call 
                        Rpc.({name="end_test";params=[Rpc.Null];})) 
                         ^ "\n" in 
@@ -149,7 +155,7 @@ lwt _ =
           (sprintf "ignoring request %s\n%!" req.Rpc.name) in
           let reply = 
             (Jsonrpc.string_of_response 
-              Rpc.({success=true;contents=Rpc.Null;})) 
+              Rpc.({success=false;contents=Rpc.Null;})) 
                   ^ "\n" in 
           lwt _ = Lwt_chan.output_string ch_out reply in 
           lwt _ = Lwt_chan.flush ch_out in 
