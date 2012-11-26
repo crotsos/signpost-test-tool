@@ -214,19 +214,21 @@ let run_test st test_id src in_ch out_ch () =
                   ^ "\n" in 
     lwt _ = Lwt_chan.output_string out_ch hello in 
     lwt _ = Lwt_chan.flush out_ch in
-
+    (* ignore result of action now *)
+    lwt _ = Lwt_chan.input_line in_ch in
   
     (* Wait for the client to terminate *)
     lwt req = Lwt_chan.input_line in_ch in
-    let _ = printf "client %s connected ....\n%!" (sockaddr_to_string src) in 
+    let _ = printf "client %s finished ....\n%!" (sockaddr_to_string src) in 
     let req = Jsonrpc.call_of_string req in
     lwt _ = 
-      if(req.Rpc.name == "end_test") then
+      if(req.Rpc.name = "end_test") then
         let reply = 
           (Jsonrpc.string_of_response 
             Rpc.({success=true;contents=Rpc.Null;})) 
                 ^ "\n" in 
         lwt _ = Lwt_chan.output_string out_ch reply in 
+    let _ = printf "Hello world\n%!" in 
           Lwt_chan.flush out_ch
       else
         lwt _ = log ~level:Error 
@@ -238,6 +240,28 @@ let run_test st test_id src in_ch out_ch () =
         lwt _ = Lwt_chan.output_string out_ch reply in 
           Lwt_chan.flush out_ch
     in
+    lwt len = Lwt_io.read_line in_ch in
+    let len = int_of_string len in 
+    let buf = String.create len in 
+    let client_log = Pervasives.open_out 
+    (sprintf "%s/%05ld/client-test-result.log" result_dir
+      test_id) in  
+    let _ = printf "reading input:\n%!" in
+    let l = ref 0  in
+    lwt _ = 
+      while_lwt !l < len do 
+        lwt read_z = Lwt_io.read_into in_ch buf 0 len in
+        let _ = Pervasives.output client_log buf 0 read_z in 
+        let _ = l := !l + read_z in 
+        let _ = printf "%s" (String.sub buf 0 read_z) in 
+          return ()
+      done
+    in
+    let _ = printf "\n>> %s\n%!" (sprintf "%s/%05ld/client-test-result.log"
+    result_dir test_id) in 
+   let _ = close_out client_log in 
+    
+ 
     let _ = st.in_progress <- 
       List.filter (fun (id, _) -> 
         not (test_id = id) ) st.in_progress in
@@ -284,30 +308,11 @@ let process_ctrl st test_id src in_ch out_ch =
             (Jsonrpc.string_of_response 
               Rpc.({success=false;contents=Rpc.Null;})) 
                   ^ "\n" in 
-          lwt _ = Lwt_chan.output_string out_ch reply in
+          lwt _ = Lwt_chan.output_string out_ch (reply^"\n") in
           lwt _ = Lwt_chan.flush out_ch in
            return ()
     in
 
-    lwt len = Lwt_io.read_line in_ch in 
-    let len = int_of_string len in 
-    let buf = String.create len in 
-    let client_log = Pervasives.open_out 
-    (sprintf "%s/%05ld/client-test-result.log" result_dir
-      test_id) in  
-    let _ = printf "reading input:\n%!" in
-    let l = ref 0  in
-    lwt _ = 
-      while_lwt !l < len do 
-        lwt read_z = Lwt_io.read_into in_ch buf 0 len in
-        let _ = Pervasives.output client_log buf 0 read_z in 
-        let _ = l := !l + read_z in 
-        let _ = printf "%s" (String.sub buf 0 read_z) in 
-          return ()
-      done
-    in
-    let _ = printf "\n%!" in 
-    let _ = close_out client_log in 
     lwt _ = Lwt_chan.close_in in_ch <&> 
               Lwt_chan.close_out out_ch in 
        return ()
