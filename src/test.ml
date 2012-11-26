@@ -79,7 +79,7 @@ let test id nameservers =
       fun ns ->
           (* can I connect to remote ns *)
          lwt _ = Direct.test ns in 
-(* 
+ 
           (* can I request non dnssec rr types? *)
           lwt _ = Recursive.test ns false in 
 
@@ -94,10 +94,10 @@ let test id nameservers =
 
           (* check if sig0 can go throught the resolver *)
           lwt _ = Sig0.test ns in 
-*)
+
           (* check if iodine can get through, and 
            * what is the capacity ? *)
-(*          lwt _ = Iodine_test.test id ns in *)
+          lwt _ = Iodine_test.test id ns in 
             return () 
     ) nameservers
   in
@@ -160,20 +160,25 @@ lwt _ =
    lwt _ = log ~level:Error
               "--------- Finishing signpost dns test ---------" in
     lwt _ = Lwt_log.close file_log in
-    let get_bytes_from_file filename =
+    let get_bytes_from_file filename = 
       let ch = open_in filename in
-      let len = in_channel_length ch in 
-      let buf = String.create len in
-      let _ = 
-        try 
-          Pervasives.input ch buf 0 len 
-        with _ -> 0
+      let rec read_data ch = 
+        let buf = String.create 2046 in 
+        let len = Pervasives.input ch buf 0 2046 in
+        match len with 
+        | 0 -> ""
+        | _ -> 
+            String.concat ""
+            [(String.sub buf 0 len); 
+            (read_data ch)]
       in
+      let buf = read_data ch in 
       let _ = close_in ch in 
         buf
     in
     let log_data = get_bytes_from_file "signpost-test-result.log" in 
-    lwt _ = Lwt_io.write_value ch_out (String.length log_data) in 
+    lwt _ = Lwt_io.write_line ch_out 
+              (string_of_int (String.length log_data)) in 
     lwt _ = Lwt_io.write ch_out log_data in 
     let _ = printf "file content is \n%s\n%!" 
       (get_bytes_from_file "signpost-test-result.log") in 

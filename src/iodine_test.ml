@@ -25,7 +25,7 @@ open Dns.Packet
 
 open Config
 
-external iodine_job : string -> unit job = "lwt_unix_iodine_job"
+(*external iodine_job : string -> unit job = "lwt_unix_iodine_job"*)
 
 let run_iodine ns direct t =
   (* ./iodine/bin/iodine -f -P signpost 8.8.8.8 i.measure.signpo.st *)

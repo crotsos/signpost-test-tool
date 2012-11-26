@@ -5,10 +5,10 @@ TARGETOS = `/usr/bin/uname`
 OS = $(shell uname | tr "a-z" "A-Z")
 ARCH = `uname -m`
 
-LDFLAGS +=  -lflags -cclib -lflags -lz \
-		$(shell sh src/osflags $(TARGETOS) link) \
-		-lflags -cclib -lflags -lcrypto
-CFLAGS += -cflags -ccopt -cflags -D$(OS) -cflags -ccopt -cflags -pedantic $(shell sh src/osflags $(TARGETOS) cflags)
+#LDFLAGS +=  -lflags -cclib -lflags -lz \
+#		$(shell sh src/osflags $(TARGETOS) link) \
+#		-lflags -cclib -lflags -lcrypto
+#CFLAGS += -cflags -ccopt -cflags -D$(OS) -cflags -ccopt -cflags -pedantic $(shell sh src/osflags $(TARGETOS) cflags)
 
 J ?= 2
 NAME=signpost-test
