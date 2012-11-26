@@ -85,8 +85,8 @@ typedef struct {
 #define  NEG_ACK_TRAIN    	0x00000011
 
 /* Port numbers (UDP for receiver, TCP for sender) */
-#define  UDPRCV_PORT 		48698 
-#define  TCPSND_PORT 		48699 
+#define  UDPRCV_PORT 		4869 
+#define  TCPSND_PORT 		4869 
 
 #define  UDP_BUFFER_SZ  	212536 
 

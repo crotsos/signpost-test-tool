@@ -33,6 +33,5 @@
 <src/*.ml{,i}>: pkg_lwt.ssl
 <src/signpost_server_test.{native,byte}>: custom
 # OASIS_STOP
-true: annot
-<src/*>: syntax_camlp4o, pkg_lwt.syntax
+<src/*.ml{,i}>: syntax_camlp4o, pkg_lwt.syntax
 
