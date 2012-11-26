@@ -33,5 +33,7 @@
 <src/*.ml{,i}>: pkg_lwt.ssl
 <src/signpost_server_test.{native,byte}>: custom
 # OASIS_STOP
+"iodine": -traverse
+"iodine": not_hygienic
 <src/*.ml{,i}>: syntax_camlp4o, pkg_lwt.syntax
 
