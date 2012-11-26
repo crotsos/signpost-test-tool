@@ -187,7 +187,7 @@ let run_test st test_id src in_ch out_ch () =
 
   lwt file_log = 
     file ~template ~mode:`Truncate 
-      ~file_name:(sprintf "%s/%05ld/signpost-test-result.log" result_dir
+      ~file_name:(sprintf "%s/%05ld/server-test-result.log" result_dir
       test_id) () in
   let tcpdump_eth = 
     Lwt_process.open_process_none 
@@ -289,13 +289,25 @@ let process_ctrl st test_id src in_ch out_ch =
            return ()
     in
 
-    printf "1\n%!"; 
-    lwt len = Lwt_io.read_value in_ch in 
-    printf "1\n%!"; 
+    lwt len = Lwt_io.read_line in_ch in 
+    let len = int_of_string len in 
     let buf = String.create len in 
-    printf "2\n%!"; 
-    lwt _ = Lwt_io.read_into_exactly in_ch buf 0 len in
-    let _ = printf "client log : %s\n%!" buf in 
+    let client_log = Pervasives.open_out 
+    (sprintf "%s/%05ld/client-test-result.log" result_dir
+      test_id) in  
+    let _ = printf "reading input:\n%!" in
+    let l = ref 0  in
+    lwt _ = 
+      while_lwt !l < len do 
+        lwt read_z = Lwt_io.read_into in_ch buf 0 len in
+        let _ = Pervasives.output client_log buf 0 read_z in 
+        let _ = l := !l + read_z in 
+        let _ = printf "%s" (String.sub buf 0 read_z) in 
+          return ()
+      done
+    in
+    let _ = printf "\n%!" in 
+    let _ = close_out client_log in 
     lwt _ = Lwt_chan.close_in in_ch <&> 
               Lwt_chan.close_out out_ch in 
        return ()
