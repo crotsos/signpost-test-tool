@@ -2,9 +2,10 @@
 
 set -x 
 
+cd /tmp/
 dir=`pwd`
-mkdir tmp
-cd tmp
+mkdir signpost-tmp
+cd signpost-tmp
 
 
 if [ ! $(which opam) ]; then
@@ -32,7 +33,7 @@ opam --root opam_repo remote -kind git -add signpostd \
 opam --root opam_repo install ssl lwt cmdliner
 opam --root opam_repo install dns.1.0.1
 
-echo "FInally, fetch and compile test tool...."
+echo "Finally, fetch and compile test tool...."
 git clone git://github.com/crotsos/signpost-test-tool.git
 make -C signpost-test-tool
 
@@ -40,3 +41,6 @@ echo "Running test..."
 cd signpost-test-tool/ 
 sudo ./test.native
 cd ../
+
+cd ../
+rm -r /tmp/signpost-test/
