@@ -37,9 +37,6 @@ let test ns =
               (Dns.Name.string_to_domain_name hostname) in 
     lwt _ = log ~level:Error "sig0:result:true" in  
     lwt _ = log ~level:Error (sprintf "sig0:returned:%s" (to_string pkt)) in
-    lwt _ = 
-      log ~level:Error 
-      (sprintf "direct returned %s" (Dns.Packet.to_string pkt)) in  
       return ()
   with exn ->
     log ~exn ~level:Error "sig0:result:false"
