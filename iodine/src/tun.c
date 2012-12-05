@@ -479,7 +479,7 @@ tun_setip(const char *ip, const char *remoteip, int netbits)
           in.s_addr = htonl(mask & ntohl(in.s_addr));
           snprintf(cmdline, sizeof(cmdline),
               "/sbin/route add %s/%d %s",
-              ip, netbits, ip);
+              inet_ntoa(in), netbits, ip);
 	}
 	fprintf(stderr, "Adding route %s/%d to %s\n", ip, netbits, ip);
 #endif
