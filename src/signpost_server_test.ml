@@ -198,7 +198,7 @@ let run_test st test_id src in_ch out_ch () =
     Lwt_process.open_process_none 
       ~stdout:(Lwt_process.(`FD_copy pcap_dns_fd)) 
       ~stderr:(Lwt_process.(`FD_copy pcap_dns_fd))
-      ("tcpdump", [|"tcpdump"; "-i";"dns0"; "-w";pcap_dns_file;|]) in 
+      ("tcpdump", [|"tcpdump"; "-i";"dns0"; "-s"; "90"; "-w";pcap_dns_file;|]) in 
      let addr =
       match src with
       | ADDR_INET (ip, _) -> ip
