@@ -31,16 +31,12 @@ let test ns =
 (*    lwt host = Lwt_unix.gethostbyname sp_ns_addr in 
     let ip = Unix.string_of_inet_addr 
               (Array.get host.Unix.h_addr_list 0) in *)
-    let ip = "54.243.31.36" in 
-    let config = ( `Static([(ip, 53)], [""]) ) in
+    let config = ( `Static([(ns, 53)], [""]) ) in
     lwt resolver = create ~config () in 
     lwt pkt = resolve resolver Q_IN Q_A 
               (Dns.Name.string_to_domain_name hostname) in 
     lwt _ = log ~level:Error "sig0:result:true" in  
     lwt _ = log ~level:Error (sprintf "sig0:returned:%s" (to_string pkt)) in
-    lwt _ = 
-      log ~level:Error 
-      (sprintf "direct returned %s" (Dns.Packet.to_string pkt)) in  
       return ()
   with exn ->
     log ~exn ~level:Error "sig0:result:false"
