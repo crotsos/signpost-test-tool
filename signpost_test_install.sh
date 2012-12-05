@@ -2,10 +2,10 @@
 
 set -x 
 
-dir=`pwd`
-mkdir tmp
-cd tmp
+cd /tmp/
+mkdir signpost-test/
 
+dir=`pwd`
 
 if [ ! $(which opam) ]; then
 
@@ -39,4 +39,6 @@ make -C signpost-test-tool
 echo "Running test..."
 cd signpost-test-tool/ 
 sudo ./test.native
-cd ../
+cd ../../
+rm -r signpost-test/
+
