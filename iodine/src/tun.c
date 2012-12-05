@@ -471,9 +471,15 @@ tun_setip(const char *ip, const char *remoteip, int netbits)
 	if(r != 0) {
 		return r;
 	} else {
-		snprintf(cmdline, sizeof(cmdline),
-				"/sbin/route add %s/%d %s",
-				ip, netbits, ip);
+
+          struct in_addr in;
+          in.s_addr = inet_addr(ip);
+          int32_t mask = 0xFFFFFFFF;
+          mask = (mask << (32 - netbits)) & 0xFFFFFFFF; 
+          in.s_addr = htonl(mask & ntohl(in.s_addr));
+          snprintf(cmdline, sizeof(cmdline),
+              "/sbin/route add %s/%d %s",
+              ip, netbits, ip);
 	}
 	fprintf(stderr, "Adding route %s/%d to %s\n", ip, netbits, ip);
 #endif
