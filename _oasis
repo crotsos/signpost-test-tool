@@ -13,7 +13,7 @@ Executable signpost_test
   MainIs:         test.ml
   Custom:         true
   CompiledObject: best
-  BuildDepends:   lwt, dns, dns.lwt, ssl, lwt.ssl
+  BuildDepends:   lwt, dns, dns.lwt, ssl, lwt.ssl, cmdliner
   
 Executable signpost_test_server
   Path:           src/

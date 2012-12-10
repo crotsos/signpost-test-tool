@@ -1,5 +1,6 @@
 (*
  * Copyright (c) 2012 Charalampos Rotsos <cr409@cl.cam.ac.uk>
+ * B
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,6 +26,7 @@ open Lwt_unix
 open Lwt_io 
 
 open Config
+open Cmdliner
 
 type 'a t
 
@@ -105,6 +107,32 @@ let test id nameservers =
     return ()
 
 lwt _ =
+  
+  let loc = 
+    let doc = "measurement location" in
+    Arg.(value & opt string "" & info ["l";"location"] ~docv:"LOCATION" ~doc)
+  in
+  let isp =
+    let doc = "connecting ISP" in
+    Arg.(value & opt string "" & info ["i";"isp"] ~docv:"ISP_NAME" ~doc)
+  in
+  let device =
+    let doc = "device name" in
+    Arg.(value & opt string "" & info ["d";"device"] ~docv:"DEVICE" ~doc)
+  in
+  let make_conf loc isp device =  (loc, isp, device) in 
+  let cmd_t = Term.(pure make_conf $ loc $ isp $ device ) in 
+  let info =
+    let doc = "signpost dns measurement tool" in
+    let man = [ `S "BUGS"; `P "Email bug reports to <cl-mirage@lists.cl.cam.ac.uk>."] in
+    Term.info "signpost-test-tool" ~version:"0.0.1" ~doc ~man in
+
+  let (loc, isp, device) = 
+    match Term.eval (cmd_t, info) with 
+    | `Ok x -> x 
+    | _ -> exit 1 
+  in
+
   let std_log = !default in 
   let template = "$(date).$(milliseconds) $(loc-file):$(loc-line)[$(pid)]: $(message)" in 
   lwt file_log = file ~template ~mode:`Truncate ~file_name:"signpost-test-result.log"
@@ -114,7 +142,11 @@ lwt _ =
     let _ = Ssl.init () in 
     (* setup loggers *)
     lwt _ = log ~level:Error 
-            "--------- Starting signpost dns test ---------\n%!" in
+            "--------- Starting signpost dns test ---------" in
+    lwt _ = log ~level:Error (sprintf "location:'%s'" loc) in 
+    lwt _ = log ~level:Error (sprintf "isp:'%s'" isp) in 
+    lwt _ = log ~level:Error (sprintf "device:'%s'" device) in 
+
     lwt (nameservers, domain) = load_resolv_file resolver_file in
     lwt (fd, ch_in, ch_out) = control_t () in 
     let _ = printf "sever connected....\n%!" in
@@ -199,6 +231,5 @@ lwt _ =
     lwt _ = log ~level:Error ~exn 
               (sprintf "client_error:%s\n%!" (Printexc.to_string exn)) in 
     lwt _ = Lwt_log.close file_log in 
+    
       return ()
-
-

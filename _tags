@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: a4b5545fecc70d63be70c49dee816b14)
+# DO NOT EDIT (digest: 4a33e6ef6eb8e10e43692438073d691d)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -19,8 +19,10 @@
 <src/test.{native,byte}>: pkg_lwt.ssl
 <src/test.{native,byte}>: pkg_dns
 <src/test.{native,byte}>: pkg_dns.lwt
+<src/test.{native,byte}>: pkg_cmdliner
 <src/*.ml{,i}>: pkg_dns
 <src/*.ml{,i}>: pkg_dns.lwt
+<src/*.ml{,i}>: pkg_cmdliner
 <src/test.{native,byte}>: custom
 # Executable signpost_test_server
 <src/signpost_server_test.{native,byte}>: pkg_lwt
