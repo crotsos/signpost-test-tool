@@ -3,7 +3,9 @@
 set -e 
 
 cd /tmp/
-mkdir signpost-test/
+if [ ! -e signpost-test/ ]; then 
+  mkdir signpost-test/
+fi
 cd signpost-test/
 
 dir=`pwd`
@@ -30,9 +32,9 @@ echo "init the repo...."
 opam --root opam_repo init
 eval `opam --root opam_repo config -env`
 
-echo "install new compiler "
-opam --root opam_repo switch 3.12.1
-eval `opam --root opam_repo config -env`
+#echo "install new compiler "
+#opam --root opam_repo switch 3.12.1
+#eval `opam --root opam_repo config -env`
 
 echo "adding opam signpost repo and install required packages..."
 opam --yes --root opam_repo remote -kind git -add signpostd \
